@@ -1,19 +1,16 @@
 import React from 'react';
-import Fetch from 'react-fetch-component';
 import ApolloClient, {gql} from 'apollo-boost';
-import {ApolloProvider, graphql} from 'react-apollo';
-import {Mutation} from 'react-apollo';
 import {Switch, Route, withRouter} from 'react-router';
 import RoutePropagator from '@shopify/react-shopify-app-route-propagator';
 
 
-import {Link, Thumbnail, DisplayText, Avatar, Card, ResourceList, TextStyle, AppProvider, Heading, Page, TextContainer, EmptyState} from '@shopify/polaris';
-import GameList from './components/GameList';
+import {Link, AppProvider, Page} from '@shopify/polaris';
+
 import Dashboard from './routes/Dashboard';
 //import NotFound from './NotFound';
 import Home from './routes/Home';
 import Settings from './routes/Settings';
-
+import EditProduct from './routes/EditProduct';
 
 const client = new ApolloClient({
   fetchOptions: {
@@ -33,30 +30,31 @@ const CREATE_PRODUCT = gql`
 `;
 const Propagator = withRouter(RoutePropagator);
 
-const CustomLinkComponent = ({children, url, ...rest}) => {
+/*const CustomLinkComponent = ({children, url, ...rest}) => {
   return (
     <Link to={url} {...rest}>
       {children}
     </Link>
   );
 };
-
+*/
+//linkComponent={CustomLinkComponent} in AppProvider
 
 export default function() {
   return (
-    <AppProvider linkComponent={CustomLinkComponent}>
+    <AppProvider >
       <div>
       <link rel="stylesheet" href="https://sdks.shopifycdn.com/polaris/2.2.0/polaris.min.css" />
          <Page
-          primaryAction={{content: 'Create Product', url: 'https://support.shopify.com', onAction: () => console.log('rate enabled')}}
-          secondaryActions={[{ content: 'Dashboard', url: "/dashboard"}]}
-        >      
+          primaryAction={{content: 'Create Product', url: 'https://support.shopify.com'}}
+          secondaryActions={[{ content: 'Dashboard', url: "/dashboard"}, {content: 'Settings', url: "/settings"}]}
+        > 
     <React.Fragment>
      <Propagator />
     <Switch>
       <Route exact path="/" component={Home} />          
       <Route path="/dashboard" component={Dashboard} />
-      <Route exact path="/addProduct">
+      <Route path="/editProduct" component={EditProduct}>
       </Route>
       <Route exact path="/settings" component={Settings} />    
     </Switch>
