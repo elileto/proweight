@@ -10,7 +10,7 @@ import App from '../app/App';
 export default (ctx) => {
   const markup = renderToString(
     <HTML
-      deferedScripts={[{path: 'bundle.js'}]}
+      deferedScripts={[{path: '/bundle.js'}]}
     >
     <StaticRouter location={ctx.url} context={{}}>
 

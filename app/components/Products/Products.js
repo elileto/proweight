@@ -17,14 +17,18 @@ import { Query } from "react-apollo";
 
 function renderResourceListItem(product){
     
-    const shortcutActions = product.node.handle
-      ? [{content: 'Edit Product', url: product.node.handle}]
-      : null;
+    const idNum = product.node.id.slice(22, 35);
 
+    const shortcutActions = product.node.handle
+      ? [{content: 'Edit Product', url: `/editProducts/${idNum}`}]
+      : null;
+    
+    
     return(
             <ResourceList.Item
-                id={product.node.id}
-                url={`/settings/${product.node.id}`}
+                
+                id={`${idNum}`}
+                url={`/editProducts/${idNum}`}
                 title={product.node.title}
                 media={
               <Thumbnail customer size="medium" source={product.node.images.edges[0].node.transformedSrc} />

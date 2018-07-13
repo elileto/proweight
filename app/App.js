@@ -2,15 +2,16 @@ import React from 'react';
 import ApolloClient, {gql} from 'apollo-boost';
 import {Switch, Route, withRouter} from 'react-router';
 import RoutePropagator from '@shopify/react-shopify-app-route-propagator';
+import {ApolloProvider} from 'react-apollo';
 
-
-import {Link, AppProvider, Page} from '@shopify/polaris';
+import {Link, AppProvider, Page, Icon} from '@shopify/polaris';
 
 import Dashboard from './routes/Dashboard';
 //import NotFound from './NotFound';
 import Home from './routes/Home';
 import Settings from './routes/Settings';
-import EditProduct from './routes/EditProduct';
+import Instructions from './routes/Instructions';
+import EditProducts from './routes/EditProducts';
 
 const client = new ApolloClient({
   fetchOptions: {
@@ -30,23 +31,14 @@ const CREATE_PRODUCT = gql`
 `;
 const Propagator = withRouter(RoutePropagator);
 
-/*const CustomLinkComponent = ({children, url, ...rest}) => {
-  return (
-    <Link to={url} {...rest}>
-      {children}
-    </Link>
-  );
-};
-*/
-//linkComponent={CustomLinkComponent} in AppProvider
-
 export default function() {
   return (
-    <AppProvider >
+    <AppProvider>
+      <ApolloProvider client={client}>
       <div>
       <link rel="stylesheet" href="https://sdks.shopifycdn.com/polaris/2.2.0/polaris.min.css" />
          <Page
-          primaryAction={{content: 'Create Product', url: 'https://support.shopify.com'}}
+          primaryAction={{content: "Instructions", url: '/instructions'}}
           secondaryActions={[{ content: 'Dashboard', url: "/dashboard"}, {content: 'Settings', url: "/settings"}]}
         > 
     <React.Fragment>
@@ -54,13 +46,15 @@ export default function() {
     <Switch>
       <Route exact path="/" component={Home} />          
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/editProduct" component={EditProduct}>
+      <Route exact path="/editProducts/:id" component={EditProducts}>
       </Route>
-      <Route exact path="/settings" component={Settings} />    
+      <Route exact path="/settings" component={Settings} />  
+      <Route exact path="/instructions" component={Instructions} />  
     </Switch>
     </React.Fragment>
     </Page>
-      </div>  
+      </div>
+      </ApolloProvider>  
     </AppProvider>
 
   );
