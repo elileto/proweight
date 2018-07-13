@@ -12,6 +12,7 @@ import Home from './routes/Home';
 import Settings from './routes/Settings';
 import Instructions from './routes/Instructions';
 import EditProducts from './routes/EditProducts';
+import NotFound from './routes/NotFound';
 
 const client = new ApolloClient({
   fetchOptions: {
@@ -50,6 +51,7 @@ export default function() {
       </Route>
       <Route exact path="/settings" component={Settings} />  
       <Route exact path="/instructions" component={Instructions} />  
+      <Route exact path="/404" component={NotFound} /> 
     </Switch>
     </React.Fragment>
     </Page>
