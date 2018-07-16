@@ -41,14 +41,13 @@ class AddProduct extends React.Component
       state = {
         title: '',
         description: '',
-        files: [],
       };
 
       
       
       render(){
 
-      const {title, description, files} = this.state;
+      const {title, description} = this.state;
 
       
 
@@ -61,7 +60,6 @@ class AddProduct extends React.Component
         const productInput = {
           title: title,
           bodyHtml: description,
-          images: {src: images}, 
           collectionsToJoin: ["gid://shopify/Collection/57963610168"]
 
         };
@@ -73,29 +71,7 @@ class AddProduct extends React.Component
       });
   
       }
-      const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
       
-      const fileUpload = !files.length && <DropZone.FileUpload />;
-      const uploadedFiles = files.length > 0 && (
-        <Stack vertical>
-          {files.map((file) => (
-            <Stack alignment="center">
-              <Thumbnail
-                size="small"
-                alt={file.name}
-                source={
-                  validImageTypes.indexOf(file.type) > 0
-                    ? window.URL.createObjectURL(file)
-                    : 'https://cdn.shopify.com/s/files/1/0757/9955/files/New_Post.png?12678548500147524304'
-                }
-              />
-              <div>
-                {file.name} <Caption>{file.size} bytes</Caption>
-              </div>
-            </Stack>
-          ))}
-        </Stack>
-        );
 
       return (
           <Page
@@ -126,7 +102,7 @@ class AddProduct extends React.Component
                           <Card>
                             
                             <Form onSubmit= {(event) => {
-                              this.setState({title: {title}}, {description: {description}, files: {files}});
+                              this.setState({title: {title}}, {description: {description}, });
                               mutate(createProduct);
                               }}>
                               <Card.Section>
@@ -157,16 +133,7 @@ class AddProduct extends React.Component
                                       </span>
                                     }
                                   />
-                                  <DropZone
-                                    onDrop={(files) => {
-                                      this.setState({files: [...this.state.files, ...files]});
-                                    }}
-                                    type="image"
-                                  >
-                                    {uploadedFiles}
-                                    {fileUpload}
-                                  </DropZone>
-
+                                
                                   <Button submit>Submit</Button>
                                 </FormLayout>
                               </Card.Section>

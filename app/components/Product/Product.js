@@ -47,6 +47,7 @@ const GET_PRODUCT = gql`
 export default function Product(props) {
 
 
+
   
   return (
       
@@ -58,6 +59,8 @@ export default function Product(props) {
         <ApolloProvider client={client}> 
         
         <Query query={GET_PRODUCT} variables={ {id: "gid://shopify/Product/" + props.match.params.id} }>
+
+        
         {({ loading, error, data }) => {
           
           if (loading) {
@@ -90,11 +93,15 @@ export default function Product(props) {
                 <Card.Section>
                 <TextContainer>
                 <Stack>
+                {data.product.images.edges.length > 0 ?
                 <Thumbnail
-                source={data.product.images.edges[0].node.transformedSrc} 
+                source={ data.product.images.edges[0].node.transformedSrc }
+                    
                 alt="Black choker necklace"
                 size="large" 
-                />
+                /> 
+                : null
+                }
                 <Stack vertical={true}  spacing="extraTight">
                   <Heading>{data.product.title}</Heading>
                   <p>

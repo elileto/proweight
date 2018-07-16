@@ -7,7 +7,7 @@ query {
             node {
               title
               productsCount
-              products(first: 4) {
+              products(first: 20) {
                 edges {
                   node {
                     handle

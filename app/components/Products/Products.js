@@ -22,8 +22,11 @@ function renderResourceListItem(product){
     const shortcutActions = product.node.handle
       ? [{content: 'Edit Product', url: `/editProducts/${idNum}`}]
       : null;
-    
-    
+    let productImage = "";
+      product.node.images.edges.length > 0
+        ?  productImage = product.node.images.edges[0].node.transformedSrc :
+        null;
+
     return(
             <ResourceList.Item
                 
@@ -31,7 +34,7 @@ function renderResourceListItem(product){
                 url={`/editProducts/${idNum}`}
                 title={product.node.title}
                 media={
-              <Thumbnail customer size="medium" source={product.node.images.edges[0].node.transformedSrc} />
+              <Thumbnail customer size="medium" source={productImage} />
                 }
                 shortcutActions={shortcutActions}
                 accessibilityLabel={`View details for ${name}`}
@@ -43,18 +46,12 @@ function renderResourceListItem(product){
             </ResourceList.Item>
     );
 }
-//{data: {loading, products}}
+
 
 function Products({data: {loading, collections}}){
 
-    
-        /* Comment or uncomment the next two lines to toggle the loading state */
-//   const loading = false;
+ 
 
- //  const products = null;
-
-  /* Comment or uncomment the next line to toggle the empty state */
-  // const products = ["one"];
 
 
   const loadingStateContent = loading ? (
@@ -62,21 +59,28 @@ function Products({data: {loading, collections}}){
       <TextContainer>
         <SkeletonBodyText />
       </TextContainer>
+      
     </Card>
-  ): null;
+    
+  ):null;
+
  const emptyStateContent =
- !collections ? (
+     !loading  && collections.edges[0].node.productsCount === 0 ? (
     <EmptyState
     heading="You haven't added any products to a 'weighted' collection yet."
     action={{content: 'Review Steps', url: '/settings'}}
     >
+      
     <p>Once you have added products to a collection called 'weighted' they will display on this page.</p>
     </EmptyState>
     ) : null;
     
+   
+
     const reviewsIndex =
-    collections ? (
+    !loading  && collections.edges[0].node.productsCount > 0 ? (
       <Card>
+        
         <ResourceList 
             showHeader
             resourceName={{singular: 'product', plural: 'products'}}
@@ -85,11 +89,18 @@ function Products({data: {loading, collections}}){
       </Card>
     ) : null;
 
+    if (!loading) {
+      console.log(collections.edges);
+    }
+    
+
     return (
         <Card>     
         
         {loadingStateContent}
-        {reviewsIndex}    
+        {emptyStateContent}  
+        {reviewsIndex}  
+        
         </Card>
     );
 }
